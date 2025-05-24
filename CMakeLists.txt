@@ -8,7 +8,7 @@ include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/ProjectFunctions.cmake")
 # Option to enable/disable test targets
 option(PROBAREPP_TESTS "Build and enable tests" ON)
 # Option to enable/disable precompiled header
-option(PROBARE_US_PCH "Enable precompiled headers for probare" ON)
+option(PROBARE_USE_PCH "Enable precompiled headers for probare" ON)
 
 file(GLOB_RECURSE PROBARE_SRC_FILES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[ch]pp"
@@ -24,7 +24,7 @@ add_library(
     "${CMAKE_CURRENT_SOURCE_DIR}/include/probare"
 )
 
-if(USE_PROBARE_PCH)
+if(PROBARE_USE_PCH)
     target_precompile_headers(probarepp PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/probare")
 endif()
 
