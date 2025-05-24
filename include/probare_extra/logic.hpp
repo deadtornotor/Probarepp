@@ -7,10 +7,10 @@
         auto e = (expected);                                                   \
         auto a = (actual);                                                     \
         static_assert(                                                         \
-            probare::is_streamable<decltype(e)>::value,                        \
+            probare::IsStreamable<decltype(e)>::value,                         \
             "ASSERT_EQ: expected value is not streamable to std::ostream");    \
         static_assert(                                                         \
-            probare::is_streamable<decltype(a)>::value,                        \
+            probare::IsStreamable<decltype(a)>::value,                         \
             "ASSERT_EQ: actual value is not streamable to std::ostream");      \
         if (e != a) {                                                          \
             std::cerr << "ASSERT_EQ failed: " #expected " == " #actual         \
@@ -27,10 +27,10 @@
         auto e = (expected);                                                   \
         auto a = (actual);                                                     \
         static_assert(                                                         \
-            probare::is_streamable<decltype(e)>::value,                        \
+            probare::IsStreamable<decltype(e)>::value,                         \
             "ASSERT_NEQ: expected value is not streamable to std::ostream");   \
         static_assert(                                                         \
-            probare::is_streamable<decltype(a)>::value,                        \
+            probare::IsStreamable<decltype(a)>::value,                         \
             "ASSERT_NEQ: actual value is not streamable to std::ostream");     \
         if (e == a) {                                                          \
             std::cerr << "ASSERT_NEQ failed: " #expected " != " #actual        \
