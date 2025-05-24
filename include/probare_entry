@@ -1,0 +1,27 @@
+#pragma once
+
+#include "probare"
+#include <chrono>
+
+int main()
+{
+    // Start time
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+#ifdef NO_PARALLEL
+    int error_value = probare::run_tests(false);
+#else
+    int error_value = probare::run_tests(true);
+#endif
+
+    // End time
+    auto end_time = std::chrono::high_resolution_clock::now();
+
+    // Duration in milliseconds
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+        end_time - start_time);
+
+    std::cout << "Duration: " << duration.count() << " ms\n";
+
+    return error_value;
+}

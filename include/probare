@@ -1,0 +1,8 @@
+#pragma once
+
+#include "probare_extra/data.hpp"
+#include "probare_extra/test.hpp"
+
+#include "probare_extra/equal.hpp"
+#include "probare_extra/logic.hpp"
+#include "probare_extra/throw.hpp"
