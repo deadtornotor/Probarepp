@@ -4,6 +4,7 @@
 #include <queue>
 #include <thread>
 #include <utility>
+#include <mutex>
 
 namespace
 {
