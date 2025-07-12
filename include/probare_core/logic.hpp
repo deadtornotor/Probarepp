@@ -71,6 +71,7 @@
         std::ostringstream oss;                                                \
         oss << "ASSERT_LT_EQ failed: " #a " <= " #b << std::endl               \
             << "  a: " << #a << std::endl                                      \
-            << "  b: " << #b << " at " << __FILE__ << ":"                      \
-            << __LINE__ PROBARE_ERROR(oss) _PROBARE_FAILED                     \
+            << "  b: " << #b << " at " << __FILE__ << ":" << __LINE__;         \
+        PROBARE_ERROR(oss)                                                     \
+        _PROBARE_FAILED                                                        \
     } else _PROBARE_PASSED)
