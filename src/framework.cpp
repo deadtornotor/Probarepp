@@ -1,10 +1,15 @@
-#include "probare_extra/data.hpp"
+#include "probare_core/data.hpp"
 
+#include "probare_core/common.hpp"
+
+#include <exception>
 #include <iostream>
+#include <mutex>
+#include <ostream>
 #include <queue>
+#include <sstream>
 #include <thread>
 #include <utility>
-#include <mutex>
 
 namespace
 {
@@ -27,8 +32,13 @@ namespace probare
     // Runs all tests sequentially (serial + parallel mixed)
     int run_tests(bool parallel_)
     {
-        std::cout << "=== Custom C++ Test Runner ===" << std::endl;
-        std::cout << "Running " << tests.size() << " test(s)...\n\n";
+        std::ostringstream oss;
+        oss << "=== Custom C++ Test Runner ===" << std::endl;
+        oss << "Running " << tests.size() << " test(s)..." << std::endl;
+
+        PROBARE_MESSAGE(oss)
+        oss.clear();
+
         if (!parallel_) {
             run_test_entries(tests, false);
         } else {
@@ -47,9 +57,12 @@ namespace probare
             run_test_entries(parallel_tests, true);
         }
 
-        std::cout << "\n=== Summary ===" << std::endl;
-        std::cout << "✅ Passed: " << testing.passed.load() << std::endl;
-        std::cout << "❌ Failed: " << testing.failed.load() << std::endl;
+        oss << std::endl << "=== Summary ===" << std::endl;
+        oss << "✅ Passed: " << testing.passed.load() << std::endl;
+        oss << "❌ Failed: " << testing.failed.load();
+
+        PROBARE_MESSAGE(oss)
+        oss.clear();
 
         return testing.failed.load();
     }
@@ -61,56 +74,41 @@ namespace
 
     void run_test(const TestEntry &test_entry_)
     {
-        try {
-            test_entry_.fn();
-        } catch (const std::exception &ex) {
-            std::cerr << "[ EXCEPTION ] " << test_entry_.name
-                      << " threw: " << ex.what() << std::endl;
-            testing.failed.fetch_add(1);
-        } catch (...) {
-            std::cerr << "[ EXCEPTION ] " << test_entry_.name
-                      << " threw an unknown exception" << std::endl;
-            testing.failed.fetch_add(1);
-        }
-    }
-
-    void run_test_mutex(const TestEntry &test_entry_, std::mutex &output_mutex_)
-    {
-        {
-            std::lock_guard<std::mutex> out_lock(output_mutex_);
-            std::cout << "[ RUN ]       " << test_entry_.name << std::endl;
-        }
+        std::ostringstream oss;
+        oss << "[ RUN ]       " << test_entry_.name;
+        PROBARE_MESSAGE(oss);
+        oss.clear();
 
         try {
             test_entry_.fn();
         } catch (const std::exception &ex) {
-            std::lock_guard<std::mutex> lock(output_mutex_);
-            std::cerr << "[ EXCEPTION ] " << test_entry_.name
-                      << " threw: " << ex.what() << std::endl;
-            testing.failed.fetch_add(1);
-        } catch (...) {
-            std::lock_guard<std::mutex> lock(output_mutex_);
-            std::cerr << "[ EXCEPTION ] " << test_entry_.name
-                      << " threw an unknown exception" << std::endl;
-            testing.failed.fetch_add(1);
+            oss << "[ EXCEPTION ] " << test_entry_.name
+                << " threw: " << ex.what();
+            PROBARE_ERROR(oss)
+            _PROBARE_FAILED
         }
     }
 
     void run_test_entries(std::vector<TestEntry> test_entries_, bool parallel_)
     {
+        std::ostringstream oss;
+
         if (!parallel_) {
-            std::cout << "Running " << test_entries_.size()
-                      << " serial test(s)...\n";
+            oss << "Running " << test_entries_.size() << " serial test(s)...";
+            PROBARE_MESSAGE(oss)
+            oss.clear();
+
             for (const auto &test : test_entries_) {
-                std::cout << "[ RUN ]       " << test.name << std::endl;
                 run_test(test);
             }
             return;
         }
-        std::cout << "Running " << test_entries_.size()
-                  << " parallel test(s)...\n";
 
-        std::mutex output_mutex;
+        oss << "Running " << test_entries_.size() << " parallel test(s)..."
+            << std::endl;
+        PROBARE_MESSAGE(oss)
+        oss.clear();
+
         std::mutex queue_mutex;
         std::queue<TestEntry, std::deque<TestEntry>> work_queue{
             std::deque<TestEntry>(test_entries_.begin(), test_entries_.end())};
@@ -135,7 +133,7 @@ namespace
                             return t;
                         }();
 
-                        run_test_mutex(task, output_mutex);
+                        run_test(task);
                     }
                 } catch (const std::runtime_error &e) {
                     if (std::string(e.what()) != "done")

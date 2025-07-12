@@ -2,6 +2,7 @@
 
 #include "probare"
 #include <chrono>
+#include <iostream>
 
 int main()
 {
@@ -21,7 +22,7 @@ int main()
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
         end_time - start_time);
 
-    std::cout << "Duration: " << duration.count() << " ms\n";
+    std::cout << "Duration: " << duration.count() << " ms" std::endl;
 
     return error_value;
 }
