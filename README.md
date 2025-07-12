@@ -55,27 +55,41 @@ add_probare_test(my_app)
 
 > This function will also include the `src` and `include` directory automatically if they exist
 
+
 ## Functions
 
 This is a list of defines used by this testing library
 
 | Defines | Parameters | Explanation |
 | --- | --- | --- |
-| TEST | name | Create a Test
-| TEST_NO_PARALLEL | name | Create a Test that is forced to run serially and not parallel
-| ASSERT_FLOAT_EQ | expected, actual, epsilon | Assert a float value
-| ASSERT_STR_EQ | expected, actual | Assert strings are equal
-| ASSERT_MATCH | string, pattern | Assert that the string matches the regex pattern
-| ASSERT_TRUE | condition | Assert something is true
-| ASSERT_FALSE | condition | Assert something is false
-| ASSERT_EQ | expected, actual | Assert something is equal
-| ASSERT_NEQ | expected, actual | Assert something is not equal
-| ASSERT_GT | expected, actual | Assert something is greather than a value
-| ASSERT_LT | expected, actual | Assert something is smaller than a value
-| ASSERT_GT_EQ | expected, actual | Assert something is greather or equal to a value
-| ASSERT_LT_EQ | expected, actual | Assert something is lower or equal to a value
-| ASSERT_THROW | statement, exception_type | Assert something throws
-| ASSERT_NO_THROW | statement | Assert something does not throw
+| TEST | name | Create a Test |
+| TEST_NO_PARALLEL | name | Create a Test that is forced to run serially and not parallel |
+| ASSERT_FLOAT_EQ | expected, actual, epsilon | Assert a float value |
+| ASSERT_STR_EQ | expected, actual | Assert strings are equal |
+| ASSERT_MATCH | string, pattern | Assert that the string matches the regex pattern |
+| ASSERT_TRUE | condition | Assert something is true |
+| ASSERT_FALSE | condition | Assert something is false |
+| ASSERT_EQ | expected, actual | Assert something is equal |
+| ASSERT_NEQ | expected, actual | Assert something is not equal |
+| ASSERT_GT | expected, actual | Assert something is greather than a value |
+| ASSERT_LT | expected, actual | Assert something is smaller than a value |
+| ASSERT_GT_EQ | expected, actual | Assert something is greather or equal to a value |
+| ASSERT_LT_EQ | expected, actual | Assert something is lower or equal to a value |
+| ASSERT_THROW | statement, exception_type | Assert something throws |
+| ASSERT_NO_THROW | statement | Assert something does not throw |
+| PROBARE_MESSAGE | message | Savely output message (thread save) |
+| PROBARE_ERROR | message | Savely output error message (thread save) |
+
+
+## Globals
+
+Everything is found in the `probare` namespace
+
+| Name | Type | functionality |
+| --- | --- | --- |
+| tests | `std::vector<TestEntry>` | This variable contains all test entries |
+| testing | `TestStats` | This variable contains the stats of the test |
+| message_mutex | `std::mutex` | This variable is the message mutex used by the library for thread save output |
 
 
 ## Entrypoint
