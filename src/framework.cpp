@@ -19,6 +19,7 @@ namespace
 
 namespace probare
 {
+    std::vector<TestEntry> tests;
     TestStats testing;
 
     // Define the constructor after tests is known
@@ -33,7 +34,7 @@ namespace probare
     int run_tests(bool parallel_)
     {
         std::ostringstream oss;
-        oss << "=== Custom C++ Test Runner ===" << std::endl;
+        oss << "=== C++ Test Runner ===" << std::endl;
         oss << "Running " << tests.size() << " test(s)...";
 
         PROBARE_MESSAGE(oss)

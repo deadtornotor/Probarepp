@@ -19,13 +19,12 @@ namespace probare
                   bool serial_);
     };
 
-    inline std::vector<TestEntry> tests;
-
     struct TestStats {
         std::atomic<int> passed{0};
         std::atomic<int> failed{0};
     };
 
+    extern std::vector<TestEntry> tests;
     extern TestStats testing;
 
     int run_tests(bool parallel = true);

@@ -1,7 +1,8 @@
-#include "probare_core/data.hpp"
+#include <probare>
+
+#include <chrono>
 #include <iostream>
 #include <ostream>
-#include <probare>
 
 int main()
 {
