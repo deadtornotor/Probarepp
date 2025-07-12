@@ -6,7 +6,7 @@ if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(MAIN_PROJECT ON)
 endif()
 
-project(probarepp LANGUAGES CXX)
+project(probarepp LANGUAGES CXX VERSION 1.0.1)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/CompilerOptions.cmake")
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/ProjectFunctions.cmake")
