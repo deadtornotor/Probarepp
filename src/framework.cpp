@@ -34,7 +34,7 @@ namespace probare
     {
         std::ostringstream oss;
         oss << "=== Custom C++ Test Runner ===" << std::endl;
-        oss << "Running " << tests.size() << " test(s)..." << std::endl;
+        oss << "Running " << tests.size() << " test(s)...";
 
         PROBARE_MESSAGE(oss)
         oss.clear();
@@ -59,7 +59,7 @@ namespace probare
 
         oss << std::endl << "=== Summary ===" << std::endl;
         oss << "✅ Passed: " << testing.passed.load() << std::endl;
-        oss << "❌ Failed: " << testing.failed.load();
+        oss << "❌ Failed: " << testing.failed.load() << std::endl;
 
         PROBARE_MESSAGE(oss)
         oss.clear();
@@ -104,8 +104,7 @@ namespace
             return;
         }
 
-        oss << "Running " << test_entries_.size() << " parallel test(s)..."
-            << std::endl;
+        oss << "Running " << test_entries_.size() << " parallel test(s)...";
         PROBARE_MESSAGE(oss)
         oss.clear();
 
