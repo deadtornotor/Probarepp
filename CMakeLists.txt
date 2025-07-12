@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(MAIN_PROJECT OFF)
+
+if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    set(MAIN_PROJECT ON)
+endif()
+
 project(probarepp LANGUAGES CXX)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/CompilerOptions.cmake")
@@ -23,6 +29,8 @@ add_library(
     ${PROBARE_SRC_FILES}
     "${CMAKE_CURRENT_SOURCE_DIR}/include/probare"
 )
+
+probare_setup_target_config_types(probarepp)
 
 if(PROBARE_USE_PCH)
     target_precompile_headers(probarepp PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/probare")
@@ -49,5 +57,6 @@ if(PROBAREPP_TESTS)
     endif()
 
     add_probare_test(probarepp)
+    probare_setup_target_config_types(probarepp_test)
     add_dependencies(tests build_tests)
 endif()
