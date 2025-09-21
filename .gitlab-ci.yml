@@ -1,0 +1,49 @@
+stages:
+  - prepare
+  - build
+  - test
+
+
+alpine-docker-build:
+  image: docker:cli
+  stage: prepare
+  services:
+    - docker:dind
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:alpine
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY" | "$CI_REGISTRY_PASSWORD"
+  script:
+    - docker build --pull -t "$DOCKER_IMAGE_NAME" -f ".gitlab-ci/Dockerfile.alpine"
+    - docker push "$DOCKER_IMAGE_NAME"
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - .gitlab-ci/Dockerfile.alpine
+    - if:
+      changes:
+        path:
+          - .gitlab-ci/Dockerfile.alpine
+
+.alpine-template:
+  image: $CI_REGISTRY:alpine
+
+alpine-build:
+  stage: build
+  extends: .alpine-template
+  before_script:
+    - mkdir -p build
+    - cd build
+  script:
+    - cmake ..
+    - cmake --build .
+  artifacts:
+    paths:
+      - build/probare_test
+
+alpine-test:
+  stage: test
+  extends: .alpine-template
+  script:
+    - build/probarepp_test
+

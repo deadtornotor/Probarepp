@@ -1,0 +1,17 @@
+FROM alpine:latest
+
+# Install build dependencies and CMake
+RUN apk add --no-cache \
+    cmake \
+    gcc \
+    g++ \
+    make \
+    ninja
+
+RUN mkdir -p /app
+
+# Set working directory
+WORKDIR /app
+
+# Default command
+CMD ["sh"]
