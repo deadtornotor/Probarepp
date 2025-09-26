@@ -41,7 +41,7 @@ alpine-build:
     - cmake --build .
   artifacts:
     paths:
-      - build/probare_test
+      - build/probarepp_test
 
 alpine-test:
   stage: test
