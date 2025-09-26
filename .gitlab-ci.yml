@@ -17,7 +17,7 @@ alpine-docker-build:
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
   script:
-    - docker build --pull -t "$DOCKER_IMAGE_NAME" -f ".gitlab-ci/Dockerfile.alpine"
+    - docker build --pull -t "$DOCKER_IMAGE_NAME" -f ".gitlab-ci/Dockerfile.alpine" .
     - docker push "$DOCKER_IMAGE_NAME"
   rules:
     - if: $CI_COMMIT_BRANCH
