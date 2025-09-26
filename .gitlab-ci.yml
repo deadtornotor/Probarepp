@@ -15,7 +15,7 @@ alpine-docker-build:
   variables:
     DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:alpine
   before_script:
-    - docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY" | "$CI_REGISTRY_PASSWORD"
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
   script:
     - docker build --pull -t "$DOCKER_IMAGE_NAME" -f ".gitlab-ci/Dockerfile.alpine"
     - docker push "$DOCKER_IMAGE_NAME"
@@ -27,7 +27,7 @@ alpine-docker-build:
       - .gitlab-ci/Dockerfile.alpine
 
 .alpine-template:
-  image: $CI_REGISTRY:alpine
+  image: $CI_REGISTRY_IMAGE:alpine
 
 alpine-build:
   stage: build
