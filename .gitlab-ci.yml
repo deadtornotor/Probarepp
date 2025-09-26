@@ -14,6 +14,7 @@ alpine-docker-build:
     - docker
   variables:
     DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:alpine
+    DOCKER_TLS_CERTDIR: ""
   before_script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
   script:
