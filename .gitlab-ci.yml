@@ -9,6 +9,9 @@ alpine-docker-build:
   stage: prepare
   services:
     - docker:dind
+  tags:
+    - privileged
+    - docker
   variables:
     DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:alpine
   before_script:
