@@ -20,9 +20,9 @@ alpine-docker-build:
   script:
     - docker build --pull -t "$DOCKER_IMAGE_NAME" -f ".gitlab-ci/Dockerfile.alpine" .
     - docker push "$DOCKER_IMAGE_NAME"
-  rules:
-    - changes:
-      - .gitlab-ci/Dockerfile.alpine
+#  rules:
+#    - changes:
+#      - .gitlab-ci/Dockerfile.alpine
 
 .alpine-template:
   image: $CI_REGISTRY_IMAGE/alpine:$CI_COMMIT_REF_NAME
