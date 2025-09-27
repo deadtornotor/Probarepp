@@ -35,7 +35,7 @@ alpine-build:
     - cd build
   script:
     - cmake ..
-    - cmake --build .
+    - cmake --build . --parallel $(nproc)
   artifacts:
     paths:
       - build/probarepp_test
@@ -43,6 +43,8 @@ alpine-build:
 alpine-test:
   stage: test
   extends: .alpine-template
+  dependencies:
+    - alpine-build
   script:
     - build/probarepp_test
 
