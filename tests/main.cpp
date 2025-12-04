@@ -1,5 +1,6 @@
 #include <probare>
 
+#include "probare_core/data.hpp"
 #include <chrono>
 #include <iostream>
 #include <ostream>
@@ -20,14 +21,16 @@ int main()
 
     std::cout << "Duration: " << duration.count() << " ms" << std::endl;
 
-    if (int failed = probare::testing.failed.load() != 0) {
+    if (int failed = ::probare::stats().failed.load() != 0) {
         std::cout << "[ERROR] Had " << failed << " unexpected failing tests"
                   << std::endl;
     }
 
-    if (int passed = probare::testing.passed.load() != 775) {
-        std::cout << "[ERROR] Expected 775 tests to pass" << std::endl;
-        std::cout << "[ERROR] Passed test " << passed << std::endl;
+    if (int passed = ::probare::stats().passed.load() != 775) {
+        std::cout << "Expected 775 tests to pass" << std::endl;
+        std::cout << "Passed test " << passed << std::endl;
+    } else {
+        std::cout << "All tests parsed" << std::endl;
     }
 
     return error_value;

@@ -5,10 +5,18 @@
 // --- Test Registration Macros ---
 #define TEST(name)                                                             \
     void name();                                                               \
-    static probare::TestEntry name##_test_entry(#name, name, false);           \
+    namespace                                                                  \
+    {                                                                          \
+        inline auto name##_registrar =                                         \
+            ::probare::make_test(#name, &name, false);                         \
+    }                                                                          \
     void name()
 
 #define TEST_NO_PARALLEL(name)                                                 \
     void name();                                                               \
-    static probare::TestEntry name##_test_entry(#name, name, true);            \
+    namespace                                                                  \
+    {                                                                          \
+        inline auto name##_registrar =                                         \
+            ::probare::make_test(#name, &name, true);                          \
+    }                                                                          \
     void name()

@@ -41,7 +41,7 @@ namespace probare
 
 #define PROBARE_ERROR(message)                                                 \
     {                                                                          \
-        ::probare::send_message(message);                                      \
+        ::probare::send_error(message);                                        \
     }
 
 #endif
@@ -56,12 +56,12 @@ namespace probare
 
 #define _PROBARE_FAILED                                                        \
     {                                                                          \
-        ::probare::testing.failed.fetch_add(1);                                \
+        ::probare::stats().add_failed();                                       \
     }
 
 #define _PROBARE_PASSED                                                        \
     {                                                                          \
-        ::probare::testing.passed.fetch_add(1);                                \
+        ::probare::stats().add_passed();                                       \
     }
 
 #endif
