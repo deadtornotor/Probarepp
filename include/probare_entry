@@ -6,6 +6,15 @@
 
 int main()
 {
+
+#ifdef PROBARE_EXPECTED_TESTS
+    if (probare::tests().size() != PROBARE_EXPECTED_TESTS) {
+        std::cout << probare::tests().size() << " known tests" << std::endl;
+        std::cout << "Does not match expected " << PROBARE_EXPECTED_TESTS << " tests" << std::endl;
+        std::cout << "Either update PROBARE_EXPECTED_TESTS to suit your new tests or check your current tests" << std::endl;
+        std::exit(-1);
+    }
+#endif
     // Start time
     auto start_time = std::chrono::high_resolution_clock::now();
 
@@ -23,6 +32,15 @@ int main()
         end_time - start_time);
 
     std::cout << "Duration: " << duration.count() << " ms" << std::endl;
+
+#ifdef PROBARE_EXPECTED_PASSES
+    if (probare::stats().passed.load() != PROBARE_EXPECTED_PASSES) {
+        std::cout << "Actual passes " << probare::stats().passed.load() << std::endl;
+        std::cout << "Does not match expected " << PROBARE_EXPECTED_PASSES << " passes" << std::endl;
+        std::cout << "Either update PROBARE_EXPECTED_PASSES to suit your new tests or check your current tests" << std::endl;
+        std::exit(-1);
+    }
+#endif
 
     return error_value;
 }

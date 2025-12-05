@@ -1,40 +1,7 @@
-#include <probare>
+#define PROBARE_EXPECTED_TESTS 18
+#define PROBARE_EXPECTED_PASSES 788
 
-#include "probare_core/data.hpp"
-#include <chrono>
-#include <iostream>
-#include <ostream>
-
-int main()
-{
-    // Start time
-    auto start_time = std::chrono::high_resolution_clock::now();
-
-    int error_value = probare::run_tests(true);
-
-    // End time
-    auto end_time = std::chrono::high_resolution_clock::now();
-
-    // Duration in milliseconds
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        end_time - start_time);
-
-    std::cout << "Duration: " << duration.count() << " ms" << std::endl;
-
-    if (int failed = ::probare::stats().failed.load() != 0) {
-        std::cout << "[ERROR] Had " << failed << " unexpected failing tests"
-                  << std::endl;
-    }
-
-    if (int passed = ::probare::stats().passed.load() != 775) {
-        std::cout << "Expected 775 tests to pass" << std::endl;
-        std::cout << "Passed test " << passed << std::endl;
-    } else {
-        std::cout << "All tests parsed" << std::endl;
-    }
-
-    return error_value;
-}
+#include <probare_entry>
 
 TEST(self_test_sample)
 {

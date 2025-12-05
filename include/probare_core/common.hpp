@@ -19,7 +19,7 @@ namespace probare
                                                 << std::declval<T>())>>
         : std::true_type {};
 
-    extern std::mutex message_mutex;
+    std::mutex &message_mutex();
 
     void send_message(const std::string &message_);
     void send_message(const std::ostream &oss_);

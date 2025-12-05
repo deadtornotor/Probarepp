@@ -85,12 +85,45 @@ This is a list of defines used by this testing library
 
 Everything is found in the `probare` namespace
 
-| Name | Type | functionality |
+| Name | Type | Functionality |
 | --- | --- | --- |
-| tests | `std::vector<TestEntry>` | This variable contains all test entries |
-| testing | `TestStats` | This variable contains the stats of the test |
-| message_mutex | `std::mutex` | This variable is the message mutex used by the library for thread save output |
+| tests() | `probare::TestEntryVec` | This variable contains all test entries |
+| testing() | `probare::TestStats` | This variable contains the stats of the test |
+| message_mutex() | `std::mutex` | This variable is the message mutex used by the library for thread save output |
 
+
+## Add test manually
+
+> The `TEST`/`TEST_NO_PARALLEL` define already does this automatically
+
+You can manually add a test via the `make_test` function
+
+A test needs a name, a function and the information if it is ran serial or parallel
+
+```cpp
+namespace probare {
+    TestEntryPtr make_test(const std::string &name_,
+                           std::function<void()> function_, bool serial_);
+}
+```
+
+> It will return a shared pointer to the test struct if you need access to that information
+
+### Example
+
+```cpp
+#include <probare>
+
+void my_manual_test();
+
+namespace {
+    inline auto my_manual_test_info = ::probare::make_test("my_manual_test", my_manual_test, true);
+}
+
+void my_manual_test(){
+    ASSERT_TRUE(true);
+}
+```
 
 ## Entrypoint
 
@@ -98,11 +131,49 @@ You can include `probare_entry` to use the entrypoint recommended
 
 Alternatively you can define your own entry point and run tests via `probare::run_tests(bool parallel)` if `probare` is included
 
+```cpp
+#include <probare_entry>
+```
 
-### Parallel
+### Defines
 
-If you define **NO_PARALLEL** before including `probare_entry` it will run `probare::run_tests` with parallel being set to false
+Probare lets you define some variables which have an effect on the way your tests run that you can declare
 
+> These need to be declared before including `probare_entry`
+
+
+| Name | Functionality |
+| - | - |
+| `NO_PARALLEL` | This runs all tests in serial instead of parallel |
+| `PROBARE_EXPECTED_TESTS <int>` | This lets you validate the amount of tests you declared |
+| `PROBARE_EXPECTED_PASSES <int>` | This lets you validate the amount of assertions/tests are completed |
+
+#### NO_PARALLEL
+
+This is usefull if you want to run all tests without them being executed parallel.
+
+> You won't really need to wory about race conditions and thread safety,
+> but it might slow down your tests significantly.
+
+#### PROBARE_EXPECTED_TESTS
+
+This lets you declare the total number of tests that you declared
+
+This is usefull for validating the amount of tests you expect to run
+
+> Needs to be updated manually if it changes
+
+The benefit you get is that it will error if the tests don't match so that it catches not included tests that you expect to be ran
+
+#### PROBARE_EXPECTED_PASSES
+
+This lets you declare the total number of passes that are increased every time an assert succeeds
+
+This is usefull vor validating the amount of passes that you expect from running the test
+
+> Needs to be updated manually if it changes
+
+The benefit you will get from this is that it will error at the end if you have more or less than expected passes
 
 ## Examples
 
